@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/dianzizhang/seal.svg" />
+    <link rel="apple-touch-icon" href="/dianzizhang/seal.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#f3f4f6" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <title>电子章 - 在线给PDF盖章、加印章、骑缝章工具</title>
+    <style>
+      .initial-loading {
+        position: fixed;
+        inset: 0;
+        background: #f3f4f6;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 24px;
+        z-index: 9999;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
+      }
+      html.dark .initial-loading { background: #000; }
+      .loading-logo { width: 96px; height: 96px; display: flex; align-items: center; justify-content: center; }
+      .loading-logo svg { width: 100%; height: 100%; animation: pulse 2s infinite; }
+      .loading-title { font-size: 24px; font-weight: 700; color: #1f2937; margin: 0; }
+      html.dark .loading-title { color: #fff; }
+      .loading-subtitle { color: #6b7280; font-size: 18px; margin: 0; }
+      html.dark .loading-subtitle { color: #9ca3af; }
+      .loading-progress { width: 256px; background: #e5e7eb; border-radius: 9999px; height: 8px; overflow: hidden; }
+      .loading-bar { background: #3b82f6; height: 8px; border-radius: 9999px; width: 0%; transition: width .3s ease-out; }
+      .loading-percentage { font-size: 14px; color: #6b7280; }
+      html.dark .loading-percentage { color: #9ca3af; }
+      .initial-loading.hidden { display: none; }
+      @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .5; } }
+    </style>
+    <script type="module" crossorigin src="/dianzizhang/assets/index-WIgDL4PQ.js"></script>
+    <link rel="stylesheet" crossorigin href="/dianzizhang/assets/index-Dg3GRj1_.css">
+  </head>
+  <body>
+    <div id="initial-loading" class="initial-loading">
+      <div class="loading-logo">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="32" cy="32" r="28" stroke="#dc2626" stroke-width="5" />
+          <path d="M18 32h10l3-7 4 14 3-7h8" stroke="#dc2626" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </div>
+      <div class="loading-text">
+        <h2 class="loading-title">电子章</h2>
+        <p class="loading-subtitle">正在初始化...</p>
+      </div>
+      <div class="loading-progress"><div class="loading-bar" id="loading-bar"></div></div>
+      <div class="loading-percentage" id="loading-percentage">0%</div>
+    </div>
+    <div id="root"></div>
+    <script>
+      (function () {
+        var el = document.getElementById("initial-loading");
+        var bar = document.getElementById("loading-bar");
+        var pct = document.getElementById("loading-percentage");
+        var start = Date.now();
+        var done = false;
+        function tick() {
+          if (done) return;
+          var p = Math.min((Date.now() - start) / 8000, 0.95);
+          bar.style.width = (p * 100).toFixed(0) + "%";
+          pct.textContent = Math.floor(p * 100) + "%";
+          requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+        window.completeInitialLoading = function () {
+          done = true;
+          bar.style.width = "100%";
+          pct.textContent = "100%";
+          setTimeout(function () { el && el.classList.add("hidden"); }, 220);
+        };
+      })();
+    </script>
+  </body>
+</html>
