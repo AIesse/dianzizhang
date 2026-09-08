@@ -2,6 +2,16 @@
 <html lang="zh-cn">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      // 兜底强制 HTTPS：GitHub 自定义域名的 301 跳转目标是 http://，
+      // 在 Enforce HTTPS / CF Always Use HTTPS 未开启时避免落在明文连接。
+      (function () {
+        var h = location.hostname;
+        if (location.protocol === 'http:' && h !== 'localhost' && h !== '127.0.0.1') {
+          location.replace('https://' + location.host + location.pathname + location.search + location.hash);
+        }
+      })();
+    </script>
     <link rel="icon" type="image/svg+xml" href="./seal.svg" />
     <link rel="apple-touch-icon" href="./seal.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
